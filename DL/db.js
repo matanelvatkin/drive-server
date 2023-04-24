@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', true)
-const MONGO_URL = "mongodb+srv://matanel:0526193031@cluster0.x4zq8ri.mongodb.net/drive?retryWrites=true&w=majority";
+const MONGO_URL = process.env.MONGO_URL;
 
 async function connect() {
   try {
