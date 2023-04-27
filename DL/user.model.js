@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
   },
-  my_storage: { type: mongoose.Schema.Types.ObjectId,ref:"documents" },
+  my_storage: { type: mongoose.Schema.Types.ObjectId,ref:"document" },
   isActive: { type: Boolean, default: true },
 });
 

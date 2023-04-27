@@ -1,5 +1,5 @@
-require("./DL/db").connect()
 require('dotenv').config()
+require("./DL/db").connect()
 const express = require("express");
 const app = express();
 const PORT = 5555;

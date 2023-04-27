@@ -7,7 +7,7 @@ const createDocuments = async (data) => {
   return document;
 };
 const getChildren = async (data) => {
-  const document = await documentsController.findOne({
+  const document = await documentsController.readOne({
     _id: data._id,
     isActive: true,
   });
@@ -15,17 +15,19 @@ const getChildren = async (data) => {
   return children;
 };
 const addFile = async (_id, fileName) => {
+  const newFile = await createDocuments({ type: "file", name: fileName });
   const document = await documentsController.updateAndReturn(
-    { _id: data._id },
-    {$push: {children:  { type: "file", name: fileName } } }
+    { _id },
+    { $push: { children: newFile._id } }
   );
   return document;
 };
 const addDirectory = async (_id, directoryName) => {
+  const newDirectory = await createDocuments({ type: "directory", name: directoryName });
   const document = await documentsController.updateAndReturn(
-    { _id: data._id },
-    {$push: {children:  { type: "directory", name: directoryName } } }
+    { _id},
+    { $push: { children: newDirectory._id} }
   );
   return document;
 };
-module.exports = { createDocuments, getChildren,addFile,addDirectory};
+module.exports = { createDocuments, getChildren, addFile, addDirectory };

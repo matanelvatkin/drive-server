@@ -4,6 +4,6 @@ const documentRouter = require("./documents.router");
 const mainRouter = express.Router();
 
 mainRouter.use("/user",userRouter)
-mainRouter.use("document/",documentRouter)
+mainRouter.use("/document",documentRouter)
 
 module.exports = mainRouter
