@@ -38,7 +38,6 @@ const login = async (data) => {
     const isEqual = bcrypt.compareSync(data.password, user.password);
     if (!isEqual) throw errMessage.PASSWORDS_ARE_NOT_CORRECT;
     const token = createToken(user.email);
-    console.log(user);
     return token;
   };
   

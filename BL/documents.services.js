@@ -11,7 +11,8 @@ const getChildren = async (data) => {
     _id: data._id,
     isActive: true,
   });
-  const children = document.children;
+  const children = document.children.filter(child => child.isActive);
+  console.log(children);
   return children;
 };
 const addFile = async (_id, fileName) => {
@@ -30,4 +31,11 @@ const addDirectory = async (_id, directoryName) => {
   );
   return document;
 };
-module.exports = { createDocuments, getChildren, addFile, addDirectory };
+const deleteDocuments = async (_id)=>{
+  const children = await getChildren(_id)
+  children.forEach(async (child)=>{
+    await deleteDocuments({_id:child._id})
+  })
+  return documentsController.del(_id)
+}
+module.exports = { createDocuments, getChildren, addFile, addDirectory,deleteDocuments };

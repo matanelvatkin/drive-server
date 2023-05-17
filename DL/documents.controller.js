@@ -25,11 +25,12 @@ async function updateAndReturn(filter, newData) {
   let data = await documentsData
     .findOneAndUpdate(filter, newData, { new: true })
     .populate("children");
+    console.log(data);
   if (!data) throw errMessage.DOCUMENTS_NOT_FOUND;
   return data;
 }
-async function del(id) {
-  return await update(id, { status: "deleted" });
+async function del(_id) {
+  return await update(_id, { isActive: false });
 }
 
 module.exports = {

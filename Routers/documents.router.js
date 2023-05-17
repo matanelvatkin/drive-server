@@ -8,13 +8,11 @@ const { sendError } = require("../errController");
 
 documentRouter.put("/addfile", upload.any('files'), async (req, res) => {
   try {
-    console.log(req.body);
     const file = req.files[0]
-    console.log(file);
     fs.renameSync(
       file.path,
       `uploads/${req.body.arrayPath
-        .replace(',',"/")}/${file.originalname}`
+        .replaceAll(',',"/")}/${file.originalname}`
     );
     const addFile = await documentsServices.addFile(
       req.body.id,
@@ -27,9 +25,11 @@ documentRouter.put("/addfile", upload.any('files'), async (req, res) => {
 });
 documentRouter.put("/adddirectory", async (req, res) => {
   try {
-    fs.mkdirSync(
+    fs.existsSync(`uploads/${req.body.arrayPath.join("/")}/${req.body.directoryName}`)? fs.mkdirSync(
+      `uploads/${req.body.arrayPath.join("/")}/${req.body.directoryName}_${Date.now()}`
+    ):fs.mkdirSync(
       `uploads/${req.body.arrayPath.join("/")}/${req.body.directoryName}`
-    );
+    )
     const addDirectory = await documentsServices.addDirectory(
       req.body.id,
       req.body.directoryName
@@ -40,7 +40,15 @@ documentRouter.put("/adddirectory", async (req, res) => {
   }
 });
 
-// documentRouter.put("/delete", async (req, res) => {});
+documentRouter.put("/delete", async (req, res) => {
+  try{
+    await documentsServices.deleteDocuments({_id:req.body.childrenId})
+    const updateChildren = await documentsServices.getChildren({_id:req.body.id})
+    res.send(updateChildren);
+  }catch(err){
+    sendError(res, err);
+  }
+});
 // documentRouter.put("/rename", async (req, res) => {});
 
 documentRouter.get("/getchildren", async (req, res) => {
